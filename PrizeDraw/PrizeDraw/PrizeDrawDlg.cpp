@@ -251,15 +251,15 @@ void CPrizeDrawDlg::OnBnClickedButtonGo()
 	int candidate_num = p->_candidate.size();
 	if(candidate_num <= 0)
 	{
-		AfxMessageBox(_T("nobody"));
+		AfxMessageBox(_T("没人了哟"));
 		return;
 	}
 	CString temp;
 	_edit_num.GetWindowText(temp);
 	int num = _ttoi(temp);
-	if(num < 1 || num > 30)
+	if(num > 50)
 	{
-		AfxMessageBox(_T("too many people"));
+		AfxMessageBox(_T("人太多哟"));
 		return;
 	}
 	while(num--)
@@ -295,4 +295,24 @@ void CPrizeDrawDlg::OnBnClickedButtonReset()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	CopyData();
+}
+
+void CPrizeDrawDlg::OnOK()
+{
+	// do nothing, for don't close dialog when hit Enter
+}
+
+BOOL CPrizeDrawDlg::PreTranslateMessage(MSG* pMsg)
+{
+	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_EDIT_NUM);
+	if(pMsg->message == WM_KEYDOWN && pEdit->GetSafeHwnd() == pMsg->hwnd)
+	{
+		if((pMsg->wParam < _T('0') || pMsg->wParam > _T('9'))
+			&& pMsg->wParam != VK_DELETE && pMsg->wParam != VK_BACK
+			&& pMsg->wParam != VK_LEFT && pMsg->wParam != VK_RIGHT
+			&& pMsg->wParam != VK_UP && pMsg->wParam != VK_DOWN
+			&& (pMsg->wParam < VK_NUMPAD0 || pMsg->wParam > VK_NUMPAD9))
+			return TRUE;
+	}
+	return CDialog::PreTranslateMessage(pMsg);
 }

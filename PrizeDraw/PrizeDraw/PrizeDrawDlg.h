@@ -50,4 +50,6 @@ public:
 	void CopyData();
 	CListBox _list_result;
 	afx_msg void OnBnClickedButtonReset();
+	void OnOK();
+	BOOL PreTranslateMessage(MSG* pMsg);
 };

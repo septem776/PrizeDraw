@@ -16,7 +16,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 中文(中华人民共和国) resources
+// Chinese (P.R.C.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
@@ -85,7 +85,6 @@ BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
     LTEXT           "PrizeDraw，1.0 版",IDC_STATIC,42,14,114,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2013",IDC_STATIC,42,26,114,8
-    DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
 END
 
 IDD_PRIZEDRAW_DIALOG DIALOGEX 0, 0, 563, 334
@@ -101,7 +100,7 @@ BEGIN
     PUSHBUTTON      "go",IDC_BUTTON_GO,384,23,50,14
     LTEXT           "部门类型",IDC_STATIC,35,25,28,8
     LTEXT           "部门",IDC_STATIC,146,26,15,8
-    LTEXT           "人数(1-30)",IDC_STATIC,289,25,35,8
+    LTEXT           "人数(1-50)",IDC_STATIC,289,25,35,8
     PUSHBUTTON      "reset",IDC_BUTTON_RESET,26,303,50,14
 END
 
@@ -182,7 +181,7 @@ BEGIN
     IDS_ABOUTBOX            "关于 PrizeDraw(&A)..."
 END
 
-#endif    // 中文(中华人民共和国) resources
+#endif    // Chinese (P.R.C.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
