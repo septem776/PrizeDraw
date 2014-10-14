@@ -64,6 +64,7 @@ BOOL CPrizeDrawApp::InitInstance()
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 	LoadFile("smvicNameList.csv");
+	LoadFileBlood("blood.csv");
 
 	CPrizeDrawDlg dlg;
 	m_pMainWnd = &dlg;
@@ -128,6 +129,31 @@ int CPrizeDrawApp::LoadFile(char * filename)
 		}
 		if(_deptype.find(onestaff.dep_type) == _deptype.end())
 			_deptype.insert(onestaff.dep_type);
+	}
+	fin.close();
+	return 0;
+}
+
+int CPrizeDrawApp::LoadFileBlood(char * filename)
+{
+	locale lang("chs");
+	wifstream fin(filename);
+	if(!fin)
+	{
+		AfxMessageBox(_T("数据文件打开失败！"));
+		return -1;
+	}
+	wstring line;
+	fin.imbue(lang);
+	while(getline(fin, line))
+	{
+		wstring no;
+		int index1 = 0;
+		int index2 = line.find(',');
+		if(index2 > index1)
+			no = line.substr(index1, index2-index1);
+		int staffid = _wtoi(no.c_str());
+		_mapId2Info.insert((make_pair(staffid, line)));
 	}
 	fin.close();
 	return 0;

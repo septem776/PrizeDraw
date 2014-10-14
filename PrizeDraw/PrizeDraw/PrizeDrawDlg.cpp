@@ -75,6 +75,7 @@ BEGIN_MESSAGE_MAP(CPrizeDrawDlg, CDialog)
 
 	ON_BN_CLICKED(IDC_BUTTON_GO, &CPrizeDrawDlg::OnBnClickedButtonGo)
 	ON_BN_CLICKED(IDC_BUTTON_RESET, &CPrizeDrawDlg::OnBnClickedButtonReset)
+	ON_BN_CLICKED(IDC_BUTTON_GOBLOOD, &CPrizeDrawDlg::OnBnClickedButtonGoblood)
 END_MESSAGE_MAP()
 
 
@@ -295,6 +296,7 @@ void CPrizeDrawDlg::OnBnClickedButtonReset()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	CopyData();
+	_list_result.ResetContent();
 }
 
 void CPrizeDrawDlg::OnOK()
@@ -315,4 +317,40 @@ BOOL CPrizeDrawDlg::PreTranslateMessage(MSG* pMsg)
 			return TRUE;
 	}
 	return CDialog::PreTranslateMessage(pMsg);
+}
+
+
+void CPrizeDrawDlg::OnBnClickedButtonGoblood()
+{
+	// TODO: Add your control notification handler code here
+	CPrizeDrawApp *p = (CPrizeDrawApp*)AfxGetApp();
+	CString temp;
+	_edit_num.GetWindowText(temp);
+	int num = _ttoi(temp);
+	if(num > 50)
+	{
+		AfxMessageBox(_T("人太多哟"));
+		return;
+	}
+	int candidate_num = p->_mapId2Info.size();
+	set<int> tmpid;
+	if(num > candidate_num)
+		num = candidate_num;
+	locale lang("chs");
+	wofstream fout("result.csv");
+	fout.imbue(lang);
+	_list_result.ResetContent();
+	fout << L"序号,所属公司,部门,姓名,工号,性别,出生日期" << endl;
+	while(tmpid.size() < num)
+	{
+		int rollid = p->roll(candidate_num) + 1;
+		if(tmpid.find(rollid) == tmpid.end())
+		{
+			CString text = p->_mapId2Info[rollid].c_str();
+			_list_result.AddString(text);
+			tmpid.insert(rollid);
+			fout << p->_mapId2Info[rollid] << endl;
+		}		
+	}
+	fout.close();
 }

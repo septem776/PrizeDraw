@@ -214,3 +214,5 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 *.filters
+PrizeDraw/PrizeDraw/result.csv
+PrizeDraw/PrizeDraw/献血名单.csv

@@ -13,6 +13,8 @@
 #define IDC_LIST_RESULT                 1003
 #define IDC_EDIT_NUM                    1007
 #define IDC_BUTTON_GO                   1008
+#define IDC_BUTTON_GO2                  1009
+#define IDC_BUTTON_GOBLOOD              1009
 #define IDC_BUTTON2                     1011
 #define IDC_BUTTON_RESET                1011
 

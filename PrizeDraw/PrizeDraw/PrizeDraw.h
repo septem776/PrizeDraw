@@ -32,11 +32,14 @@ struct Staff
 	wstring dep_type;
 };
 
+
+
 class CPrizeDrawApp : public CWinAppEx
 {
 public:
 	CPrizeDrawApp();
 	int LoadFile(char * filename);
+	int LoadFileBlood(char * filename);
 	int roll(int total);
 
 // ÖØÐ´
@@ -53,7 +56,7 @@ public:
 	set<wstring> _deptype;
 	vector<Staff> _candidate;
 
-
+	map<int, wstring> _mapId2Info;
 };
 
 extern CPrizeDrawApp theApp;

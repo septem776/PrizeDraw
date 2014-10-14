@@ -52,4 +52,5 @@ public:
 	afx_msg void OnBnClickedButtonReset();
 	void OnOK();
 	BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnBnClickedButtonGoblood();
 };
