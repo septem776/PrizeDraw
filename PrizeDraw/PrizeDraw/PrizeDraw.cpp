@@ -63,8 +63,8 @@ BOOL CPrizeDrawApp::InitInstance()
 	// TODO: 应适当修改该字符串，
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
-	LoadFile("smvicNameList.csv");
-	LoadFileBlood("blood.csv");
+	//LoadFile("smvicNameList.csv");
+	LoadFileBlood("namelist.csv");
 
 	CPrizeDrawDlg dlg;
 	m_pMainWnd = &dlg;
@@ -145,14 +145,21 @@ int CPrizeDrawApp::LoadFileBlood(char * filename)
 	}
 	wstring line;
 	fin.imbue(lang);
+	int staffid = 0;
 	while(getline(fin, line))
 	{
-		wstring no;
+		wstring flag;
 		int index1 = 0;
-		int index2 = line.find(',');
-		if(index2 > index1)
-			no = line.substr(index1, index2-index1);
-		int staffid = _wtoi(no.c_str());
+		int index2 = line.rfind(',');
+		if(index2 > 0)
+		{
+			flag = line.substr(index2+1);
+		}
+		if(_wtoi(flag.c_str()) == 1)
+			continue;
+
+		line = line.substr(0, index2);
+		staffid++;
 		_mapId2Info.insert((make_pair(staffid, line)));
 	}
 	fin.close();

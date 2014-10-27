@@ -76,6 +76,7 @@ BEGIN_MESSAGE_MAP(CPrizeDrawDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_GO, &CPrizeDrawDlg::OnBnClickedButtonGo)
 	ON_BN_CLICKED(IDC_BUTTON_RESET, &CPrizeDrawDlg::OnBnClickedButtonReset)
 	ON_BN_CLICKED(IDC_BUTTON_GOBLOOD, &CPrizeDrawDlg::OnBnClickedButtonGoblood)
+	ON_BN_CLICKED(IDC_BUTTON_EXPORT, &CPrizeDrawDlg::OnBnClickedButtonExport)
 END_MESSAGE_MAP()
 
 
@@ -337,10 +338,14 @@ void CPrizeDrawDlg::OnBnClickedButtonGoblood()
 	if(num > candidate_num)
 		num = candidate_num;
 	locale lang("chs");
-	wofstream fout("result.csv");
-	fout.imbue(lang);
+	wostringstream oss;
+	oss.imbue(lang);
+	//wofstream fout("result.csv");
+	//fout.imbue(lang);
 	_list_result.ResetContent();
-	fout << L"序号,所属公司,部门,姓名,工号,性别,出生日期" << endl;
+	//fout << L"序号,所属公司,部门,姓名,工号,性别,出生日期" << endl;
+	oss << L"序号,所属公司,部门,姓名,工号,性别,出生日期" << endl;
+
 	while(tmpid.size() < num)
 	{
 		int rollid = p->roll(candidate_num) + 1;
@@ -349,8 +354,23 @@ void CPrizeDrawDlg::OnBnClickedButtonGoblood()
 			CString text = p->_mapId2Info[rollid].c_str();
 			_list_result.AddString(text);
 			tmpid.insert(rollid);
-			fout << p->_mapId2Info[rollid] << endl;
+			//fout << p->_mapId2Info[rollid] << endl;
+			oss << p->_mapId2Info[rollid] << endl;
+
 		}		
 	}
+	_output_data = oss.str();
+	//fout.close();
+}
+
+
+void CPrizeDrawDlg::OnBnClickedButtonExport()
+{
+	// TODO: Add your control notification handler code here
+	locale lang("chs");
+	wofstream fout("result.csv");
+	fout.imbue(lang);
+	fout << _output_data;
 	fout.close();
+	AfxMessageBox(_T("导出成功！"));
 }

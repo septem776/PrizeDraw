@@ -42,6 +42,7 @@ private:
 	wstring _chosen_deptype;
 	wstring _chosen_dep;
 	int _chosen_num;
+	wstring _output_data;
 
 public:
 	afx_msg void OnCbnSelchangeComboType();
@@ -53,4 +54,5 @@ public:
 	void OnOK();
 	BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnBnClickedButtonGoblood();
+	afx_msg void OnBnClickedButtonExport();
 };
