@@ -189,13 +189,15 @@ void CPrizeDrawDlg::OnCbnSetfocusComboDep()
 	}
 
 	_name.AddString(_T("全部"));
-	map<wstring, wstring>::iterator it = p->_department.begin();
-	for( ; it != p->_department.end(); ++it)
-	{
-		if(it->second.c_str() == _chosen_deptype)
+	vector<StaffBlood>::iterator it = p->_vecIdDep.begin();
+	set<wstring> tmp;
+	for( ; it != p->_vecIdDep.end(); ++it)
+	{		
+		if(it->dep_type == _chosen_deptype && tmp.find(it->dep) == tmp.end())
 		{
-			LPCTSTR addline = it->first.c_str();
+			LPCTSTR addline = it->dep.c_str();
 			_name.AddString(addline);
+			tmp.insert(it->dep);
 		}
 	}
 }
@@ -284,12 +286,20 @@ void CPrizeDrawDlg::OnBnClickedButtonGo()
 void CPrizeDrawDlg::CopyData()
 {
 	CPrizeDrawApp *p = (CPrizeDrawApp*)AfxGetApp();
-	p->_candidate.clear();
-	vector<Staff>::iterator it = p->_staff.begin();
-	for(; it != p->_staff.end(); ++it)
+	//p->_candidate.clear();
+	//vector<Staff>::iterator it = p->_staff.begin();
+	//for(; it != p->_staff.end(); ++it)
+	//{
+	//	if((it->dep == _chosen_dep || _chosen_dep == L"全部") && (it->dep_type == _chosen_deptype || _chosen_deptype == L"全部"))
+	//		p->_candidate.push_back(*it);
+	//}
+	p->_toRoll.clear();
+	for(size_t i = 0; i < p->_vecIdDep.size(); i++)
 	{
-		if((it->dep == _chosen_dep || _chosen_dep == L"全部") && (it->dep_type == _chosen_deptype || _chosen_deptype == L"全部"))
-			p->_candidate.push_back(*it);
+		if((p->_vecIdDep[i].dep == _chosen_dep || _chosen_dep == L"全部") && (p->_vecIdDep[i].dep_type == _chosen_deptype || _chosen_deptype == L"全部") )
+		{
+			p->_toRoll.push_back(p->_vecIdDep[i].id);
+		}
 	}
 }
 
@@ -327,13 +337,13 @@ void CPrizeDrawDlg::OnBnClickedButtonGoblood()
 	CPrizeDrawApp *p = (CPrizeDrawApp*)AfxGetApp();
 	CString temp;
 	_edit_num.GetWindowText(temp);
-	int num = _ttoi(temp);
+	size_t num = _ttoi(temp);
 	if(num > 50)
 	{
 		AfxMessageBox(_T("人太多哟"));
 		return;
 	}
-	int candidate_num = p->_mapId2Info.size();
+	size_t candidate_num = p->_toRoll.size();
 	set<int> tmpid;
 	if(num > candidate_num)
 		num = candidate_num;
@@ -348,18 +358,18 @@ void CPrizeDrawDlg::OnBnClickedButtonGoblood()
 
 	while(tmpid.size() < num)
 	{
-		int rollid = p->roll(candidate_num) + 1;
+		int rollid = p->roll(candidate_num);
 		if(tmpid.find(rollid) == tmpid.end())
 		{
-			CString text = p->_mapId2Info[rollid].c_str();
+			CString text = p->_mapId2Info[p->_toRoll[rollid]].c_str();
 			_list_result.AddString(text);
 			tmpid.insert(rollid);
 			//fout << p->_mapId2Info[rollid] << endl;
-			oss << p->_mapId2Info[rollid] << endl;
-
+			oss << text << endl;
 		}		
 	}
 	_output_data = oss.str();
+	CopyData();
 	//fout.close();
 }
 

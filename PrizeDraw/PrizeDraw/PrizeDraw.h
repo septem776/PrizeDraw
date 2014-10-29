@@ -32,7 +32,12 @@ struct Staff
 	wstring dep_type;
 };
 
-
+struct StaffBlood
+{
+	int id;
+	wstring dep;
+	wstring dep_type;
+};
 
 class CPrizeDrawApp : public CWinAppEx
 {
@@ -57,6 +62,8 @@ public:
 	vector<Staff> _candidate;
 
 	map<int, wstring> _mapId2Info;
+	vector<StaffBlood> _vecIdDep;
+	vector<int> _toRoll;
 };
 
 extern CPrizeDrawApp theApp;

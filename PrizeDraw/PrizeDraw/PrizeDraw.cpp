@@ -149,18 +149,35 @@ int CPrizeDrawApp::LoadFileBlood(char * filename)
 	while(getline(fin, line))
 	{
 		wstring flag;
-		int index1 = 0;
-		int index2 = line.rfind(',');
-		if(index2 > 0)
+		int index1 = line.find(',');
+		int index2 = line.find(',', index1+1);
+		int index3 = line.find(',', index2+1);
+
+		wstring deptype = line.substr(index1+1, index2-index1-1);
+		wstring dep = line.substr(index2+1, index3-index2-1);
+		if(_department.find(dep) == _department.end())
 		{
-			flag = line.substr(index2+1);
+			_department.insert(make_pair(dep, deptype));
+		}
+		if(_deptype.find(deptype) == _deptype.end())
+			_deptype.insert(deptype);
+
+		int indexlast = line.rfind(',');
+		if(indexlast > 0)
+		{
+			flag = line.substr(indexlast+1);
 		}
 		if(_wtoi(flag.c_str()) == 1)
 			continue;
 
-		line = line.substr(0, index2);
+		line = line.substr(0, indexlast);
 		staffid++;
 		_mapId2Info.insert((make_pair(staffid, line)));
+		StaffBlood sb;
+		sb.id = staffid;
+		sb.dep = dep;
+		sb.dep_type = deptype;
+		_vecIdDep.push_back(sb);
 	}
 	fin.close();
 	return 0;
